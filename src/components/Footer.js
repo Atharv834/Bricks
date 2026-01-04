@@ -38,10 +38,10 @@ const Footer = ({ handleFilter }) => {
           <div className="footer-section">
             <h4 className="footer-subtitle">Categories</h4>
             <ul className="footer-links" onClick={handleCategoryClick}>
-              <li><a href="#" className="footer-link" data-filter="Authentication">🔐 Authentication</a></li>
-              <li><a href="#" className="footer-link" data-filter="Injection">💉 Injection</a></li>
-              <li><a href="#" className="footer-link" data-filter="XSS">🔥 XSS</a></li>
-              <li><a href="#" className="footer-link" data-filter="Critical">🚨 Critical</a></li>
+              <li><button type="button" className="footer-link" data-filter="Authentication">🔐 Authentication</button></li>
+              <li><button type="button" className="footer-link" data-filter="Injection">💉 Injection</button></li>
+              <li><button type="button" className="footer-link" data-filter="XSS">🔥 XSS</button></li>
+              <li><button type="button" className="footer-link" data-filter="Critical">🚨 Critical</button></li>
             </ul>
           </div>
 
@@ -53,10 +53,10 @@ const Footer = ({ handleFilter }) => {
               <button type="submit" className="newsletter-btn">📧 Subscribe</button>
             </form>
             <div className="social-links">
-              <a href="#" className="social-link" aria-label="Twitter" target="_blank" rel="noopener noreferrer">🐦</a>
-              <a href="#" className="social-link" aria-label="GitHub" target="_blank" rel="noopener noreferrer">🐙</a>
-              <a href="#" className="social-link" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer">💼</a>
-              <a href="#" className="social-link" aria-label="Discord" target="_blank" rel="noopener noreferrer">💬</a>
+              <button type="button" className="social-link" aria-label="Twitter">🐦</button>
+              <button type="button" className="social-link" aria-label="GitHub">🐙</button>
+              <button type="button" className="social-link" aria-label="LinkedIn">💼</button>
+              <button type="button" className="social-link" aria-label="Discord">💬</button>
             </div>
           </div>
         </div>
@@ -66,9 +66,9 @@ const Footer = ({ handleFilter }) => {
             <div className="footer-legal">
               <p>&copy; 2024 CyberSec Bug Bounty Hub. All rights reserved.</p>
               <div className="legal-links">
-                <a href="#" className="legal-link">Privacy Policy</a>
-                <a href="#" className="legal-link">Terms of Service</a>
-                <a href="#" className="legal-link">Cookie Policy</a>
+                <button type="button" className="legal-link">Privacy Policy</button>
+                <button type="button" className="legal-link">Terms of Service</button>
+                <button type="button" className="legal-link">Cookie Policy</button>
               </div>
             </div>
             <div className="footer-attribution">

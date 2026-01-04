@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { sanitizeText } from '../utils/security';
 
 const Modal = ({ bug, closeModal, handleFilter }) => {
   useEffect(() => {
@@ -19,12 +20,30 @@ const Modal = ({ bug, closeModal, handleFilter }) => {
     return null;
   }
 
-  const { name, type, severity, bounty, company, description, lessonLearned, method, whenToUse, tags } = bug;
+  // Sanitize all data to prevent XSS attacks
+  const sanitizedBug = {
+    name: sanitizeText(bug.name || ''),
+    type: sanitizeText(bug.type || ''),
+    severity: sanitizeText(bug.severity || ''),
+    bounty: sanitizeText(bug.bounty || ''),
+    company: sanitizeText(bug.company || ''),
+    description: sanitizeText(bug.description || ''),
+    lessonLearned: sanitizeText(bug.lessonLearned || ''),
+    method: sanitizeText(bug.method || ''),
+    whenToUse: sanitizeText(bug.whenToUse || ''),
+    tags: (bug.tags || []).map(tag => sanitizeText(tag))
+  };
+
+  const { name, type, severity, bounty, company, description, lessonLearned, method, whenToUse, tags } = sanitizedBug;
 
   const handleTagClick = (tag, event) => {
-    event.stopPropagation();
-    handleFilter(tag);
-    closeModal();
+    try {
+      event.stopPropagation();
+      handleFilter(tag);
+      closeModal();
+    } catch (error) {
+      console.error('Error handling tag click:', error);
+    }
   };
 
 
@@ -45,29 +64,29 @@ const Modal = ({ bug, closeModal, handleFilter }) => {
 
           <div className="modal-section">
             <h3>📝 Description</h3>
-            <p>{description}</p>
+            <p dangerouslySetInnerHTML={{ __html: description }} />
           </div>
 
           <div className="modal-section">
             <h3>🧠 Lesson Learned</h3>
-            <p>{lessonLearned}</p>
+            <p dangerouslySetInnerHTML={{ __html: lessonLearned }} />
           </div>
 
           <div className="modal-section">
             <h3>🧠 Methodology</h3>
-            <p style={{ whiteSpace: 'pre-wrap' }}>{method}</p>
+            <p style={{ whiteSpace: 'pre-wrap' }} dangerouslySetInnerHTML={{ __html: method }} />
           </div>
 
           <div className="modal-section">
             <h3>🎯 When to Use/Look For</h3>
-            <p>{whenToUse}</p>
+            <p dangerouslySetInnerHTML={{ __html: whenToUse }} />
           </div>
 
           <div className="modal-section">
             <h3>🏷️ Tags</h3>
             <div className="modal-tags">
-              {tags.map(tag => (
-                <span key={tag} className="tag" onClick={(e) => handleTagClick(tag, e)}>{tag}</span>
+              {tags.map((tag, index) => (
+                <span key={`${tag}-${index}`} className="tag" onClick={(e) => handleTagClick(tag, e)} dangerouslySetInnerHTML={{ __html: tag }} />
               ))}
             </div>
           </div>
