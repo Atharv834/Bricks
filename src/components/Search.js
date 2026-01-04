@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { sanitizeInput } from '../utils/security';
 
 const iconMap = {
   'Authentication Bypass': '🔐',
@@ -29,47 +28,6 @@ const Search = ({
   searchTerm,
   categories
 }) => {
-  const handleSearchChange = (e) => {
-    try {
-      const sanitized = sanitizeInput(e.target.value);
-      setSearchTerm(sanitized);
-    } catch (error) {
-      console.error('Error handling search change:', error);
-    }
-  };
-
-  const handleClearSearch = () => {
-    try {
-      setSearchTerm('');
-    } catch (error) {
-      console.error('Error clearing search:', error);
-    }
-  };
-
-  const handleSortChange = (e) => {
-    try {
-      setCurrentSort(e.target.value);
-    } catch (error) {
-      console.error('Error handling sort change:', error);
-    }
-  };
-
-  const handleFilterClick = (cat) => {
-    try {
-      handleFilter(cat);
-    } catch (error) {
-      console.error('Error handling filter:', error);
-    }
-  };
-
-  const handleClearFilters = () => {
-    try {
-      clearAllFilters();
-    } catch (error) {
-      console.error('Error clearing filters:', error);
-    }
-  };
-
   return (
     <section className="search-section" aria-labelledby="search-heading">
       <h2 id="search-heading" className="sr-only">Search and Filter Vulnerabilities</h2>
@@ -84,13 +42,12 @@ const Search = ({
           placeholder="Search vulnerabilities, methodologies, techniques..."
           aria-describedby="search-help"
           value={searchTerm}
-          onChange={handleSearchChange}
-          maxLength={500}
+          onChange={(e) => setSearchTerm(e.target.value)}
         />
         {searchTerm && (
           <button
             className="btn btn--sm"
-            onClick={handleClearSearch}
+            onClick={() => setSearchTerm('')}
             aria-label="Clear search"
             style={{position: 'absolute', right: '10px', top: '50%', transform: 'translateY(-50%)'}}
           >
@@ -108,7 +65,7 @@ const Search = ({
             className="form-control sort-select glow-focus"
             aria-label="Sort vulnerabilities"
             value={currentSort}
-            onChange={handleSortChange}
+            onChange={(e) => setCurrentSort(e.target.value)}
           >
             <option value="date-desc">🕒 Newest First</option>
             <option value="date-asc">⏰ Oldest First</option>
@@ -130,7 +87,7 @@ const Search = ({
           id="clearFilters"
           className="btn btn--secondary btn--sm glow-hover"
           aria-label="Clear all search and filter criteria"
-          onClick={handleClearFilters}
+          onClick={clearAllFilters}
         >
           🗑️ Clear All Filters
         </button>
@@ -148,7 +105,7 @@ const Search = ({
               className={`filter-btn glow-hover ${active ? 'active' : ''}`}
               data-filter={cat}
               aria-pressed={active}
-              onClick={() => handleFilterClick(cat)}
+              onClick={() => handleFilter(cat)}
             >
               {icon} {label}
             </button>
