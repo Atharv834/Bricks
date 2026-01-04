@@ -1,186 +1,33 @@
-# CyberSec Bug Bounty Hub 🔐
+# Getting Started with Create React App
 
-[![Security Status](https://img.shields.io/badge/Security-Hardened-success)](./SECURITY_AUDIT_REPORT.md)
-[![Build Status](https://img.shields.io/badge/Build-Passing-brightgreen)]()
-[![OWASP](https://img.shields.io/badge/OWASP-Compliant-blue)]()
-[![Deployment](https://img.shields.io/badge/Deployment-GitHub%20Pages-orange)](https://Atharv834.github.io/Bricks)
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-Elite vulnerability documentation platform for cybersecurity professionals and bug bounty hunters. A comprehensive collection of real-world security vulnerabilities with detailed methodologies and lessons learned.
+## Available Scripts
 
-## 🌟 Features
+In the project directory, you can run:
 
-- **18+ Real Vulnerability Cases** - Comprehensive documentation of actual security findings
-- **Advanced Search & Filtering** - Multi-field search across all vulnerability data
-- **Smart Categorization** - Organized by type, severity, and exploitation method
-- **Dark/Light Theme** - Professional UI with theme switching
-- **Accessibility First** - Full keyboard navigation and screen reader support
-- **Security Hardened** - OWASP Top 10 compliant with comprehensive security measures
-- **Responsive Design** - Works seamlessly on all devices
+### `npm start`
 
-## 🚀 Live Demo
-
-Visit the live application: [https://Atharv834.github.io/Bricks](https://Atharv834.github.io/Bricks)
-
-## 🔒 Security Features
-
-This application has undergone a comprehensive security audit and includes:
-
-- ✅ **XSS Prevention** - DOMPurify sanitization and HTML escaping
-- ✅ **Input Validation** - Comprehensive validation for all user inputs
-- ✅ **Error Handling** - React Error Boundaries with graceful degradation
-- ✅ **Security Headers** - CSP, X-Frame-Options, X-Content-Type-Options
-- ✅ **Safe Storage** - Error-handled localStorage operations
-- ✅ **OWASP Compliance** - Addresses OWASP Top 10 security risks
-
-See [SECURITY_AUDIT_REPORT.md](./SECURITY_AUDIT_REPORT.md) for complete security documentation.
-
-## 📦 Installation
-
-```bash
-# Clone the repository
-git clone https://github.com/Atharv834/Bricks.git
-
-# Navigate to project directory
-cd Bricks
-
-# Install dependencies
-npm install
-
-# Start development server
-npm start
-```
-
-## 🛠️ Available Scripts
-
-### Development
-
-#### `npm start`
-
-Runs the app in development mode.  
+Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-The page will reload when you make changes.
+The page will reload when you make changes.\
+You may also see any lint errors in the console.
 
-#### `npm test`
+### `npm test`
 
-Launches the test runner in interactive watch mode.
+Launches the test runner in the interactive watch mode.\
+See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### Production
+### `npm run build`
 
-#### `npm run build`
+Builds the app for production to the `build` folder.\
+It correctly bundles React in production mode and optimizes the build for the best performance.
 
-Builds the app for production to the `build` folder.  
-Optimizes the build for best performance.
+The build is minified and the filenames include the hashes.\
+Your app is ready to be deployed!
 
-- Bundle size: ~82 KB (gzipped)
-- CSS size: ~6 KB (gzipped)
-
-#### `npm run deploy`
-
-Deploys the application to GitHub Pages.
-
-See [DEPLOYMENT.md](./DEPLOYMENT.md) for detailed deployment instructions.
-
-## 📚 Documentation
-
-- **[SECURITY_AUDIT_REPORT.md](./SECURITY_AUDIT_REPORT.md)** - Comprehensive security audit documentation
-- **[DEPLOYMENT.md](./DEPLOYMENT.md)** - Deployment guide for GitHub Pages
-
-## 🏗️ Project Structure
-
-```
-Bricks/
-├── public/
-│   └── index.html          # HTML template with security headers
-├── src/
-│   ├── components/         # React components
-│   │   ├── ErrorBoundary.js
-│   │   ├── Header.js
-│   │   ├── Footer.js
-│   │   ├── Modal.js
-│   │   ├── Search.js
-│   │   ├── VulnerabilityCard.js
-│   │   └── VulnerabilityGrid.js
-│   ├── utils/
-│   │   └── security.js     # Security utilities (sanitization, validation)
-│   ├── data.js             # Vulnerability data
-│   ├── App.js              # Main application component
-│   ├── App.css             # Application styles
-│   └── index.js            # Application entry point
-├── .github/
-│   └── workflows/          # GitHub Actions workflows
-│       ├── deploy.yml
-│       └── deploy-gh-pages.yml
-└── package.json
-```
-
-## 🔐 Vulnerability Categories
-
-The platform documents vulnerabilities across multiple categories:
-
-- Authentication Bypass
-- SQL Injection
-- Command Injection
-- XSS (Cross-Site Scripting)
-- IDOR (Insecure Direct Object Reference)
-- Business Logic Flaws
-- Access Control Issues
-- Information Disclosure
-- Account Takeover
-- Privilege Escalation
-
-## 🎯 Target Audience
-
-- Bug Bounty Hunters
-- Security Researchers
-- Penetration Testers
-- Security Engineers
-- Cybersecurity Students
-- Application Security Professionals
-
-## 🤝 Contributing
-
-Contributions are welcome! To contribute:
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/new-vulnerability`)
-3. Commit your changes (`git commit -m 'Add new vulnerability case'`)
-4. Push to the branch (`git push origin feature/new-vulnerability`)
-5. Open a Pull Request
-
-Please ensure:
-- All data is properly sanitized
-- No sensitive information is included
-- Security best practices are followed
-- Documentation is updated
-
-## 📄 License
-
-This project is open source and available under the [MIT License](LICENSE).
-
-## 👨‍💻 Author
-
-Made with 🩷 by **lordofheaven** ([@Atharv834](https://github.com/Atharv834))
-
-## 🙏 Acknowledgments
-
-- Bug bounty community for the vulnerability examples
-- OWASP for security guidelines
-- React team for the excellent framework
-- All security researchers who contribute to making the web safer
-
-## 📞 Support
-
-For issues, questions, or suggestions:
-- Open an issue on GitHub
-- Check existing documentation
-- Review the security audit report
-
----
-
-**Last Updated**: January 4, 2026  
-**Version**: 1.0.0  
-**Status**: ✅ Production Ready & Security Hardened
+See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
 ### `npm run eject`
 
