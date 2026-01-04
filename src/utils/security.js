@@ -73,8 +73,18 @@ export const sanitizeInput = (input) => {
       return '';
     }
     
-    // Remove any HTML tags
-    let sanitized = input.replace(/<[^>]*>/g, '');
+    // Remove any HTML tags - multiple passes to handle nested/incomplete tags
+    let sanitized = input;
+    let previousLength;
+    
+    // Keep replacing until no more tags are found (handles incomplete tags)
+    do {
+      previousLength = sanitized.length;
+      sanitized = sanitized.replace(/<[^>]*>/g, '');
+    } while (sanitized.length !== previousLength && sanitized.includes('<'));
+    
+    // Remove any remaining < or > characters to prevent injection
+    sanitized = sanitized.replace(/[<>]/g, '');
     
     // Remove null bytes
     sanitized = sanitized.replace(/\0/g, '');
