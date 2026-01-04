@@ -64,29 +64,29 @@ const Modal = ({ bug, closeModal, handleFilter }) => {
 
           <div className="modal-section">
             <h3>📝 Description</h3>
-            <p dangerouslySetInnerHTML={{ __html: description }} />
+            <p>{description}</p>
           </div>
 
           <div className="modal-section">
             <h3>🧠 Lesson Learned</h3>
-            <p dangerouslySetInnerHTML={{ __html: lessonLearned }} />
+            <p>{lessonLearned}</p>
           </div>
 
           <div className="modal-section">
             <h3>🧠 Methodology</h3>
-            <p style={{ whiteSpace: 'pre-wrap' }} dangerouslySetInnerHTML={{ __html: method }} />
+            <p style={{ whiteSpace: 'pre-wrap' }}>{method}</p>
           </div>
 
           <div className="modal-section">
             <h3>🎯 When to Use/Look For</h3>
-            <p dangerouslySetInnerHTML={{ __html: whenToUse }} />
+            <p>{whenToUse}</p>
           </div>
 
           <div className="modal-section">
             <h3>🏷️ Tags</h3>
             <div className="modal-tags">
               {tags.map((tag, index) => (
-                <span key={`${tag}-${index}`} className="tag" onClick={(e) => handleTagClick(tag, e)} dangerouslySetInnerHTML={{ __html: tag }} />
+                <span key={`${tag}-${index}`} className="tag" onClick={(e) => handleTagClick(tag, e)}>{tag}</span>
               ))}
             </div>
           </div>
