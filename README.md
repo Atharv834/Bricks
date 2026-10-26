@@ -1,6 +1,6 @@
 # BountyBricks
 
-An independent library of vulnerability report notes for security researchers. Browse 20 findings, understand their methods, and keep a personal reading list.
+An independent library of vulnerability report notes for security researchers. Browse 24 findings, understand their methods, and keep a personal reading list.
 
 **[Open the live library](https://atharv834.github.io/Bricks/)**
 
@@ -11,12 +11,13 @@ An independent library of vulnerability report notes for security researchers. B
 - Search titles, companies, descriptions, methods, lessons and tags. Multiple search words can appear anywhere in a report.
 - Combine search with severity, topic and collection filters. Sort by collection order, bounty, severity or name.
 - Grid and compact list views, plus useful empty states and one-click filter reset.
+- Four credited public disclosures: GitLab password reset (CVE-2023-7028), Starbucks transfer race condition, GitLab/ExifTool upload RCE (CVE-2021-22205) and Red Hat cache poisoning. Each includes source links and a study summary.
 - Save reports and return to recently opened notes. Reading progress, bookmarks, theme and layout are stored in this browser; they are not synced to an account.
 - Report briefings with a highlighted lesson, original methodology, copy control and clickable tags.
 - Keyboard support: `/` or `Ctrl/Cmd+K` focuses search; `Esc` closes a report. Native modal focus containment, focus restoration and reduced-motion support.
 - Responsive navigation and report layouts for small screens.
 
-The dataset is in `src/data.js`. These are collected research notes; original disclosures and bounty claims have not been independently verified. Reports have no recorded publication dates, so the interface does not imply a chronological order.
+The dataset is in `src/data.js`. The original 20 records and their methodology wording are preserved. Four additions include credited primary disclosures, publication dates where known and clearly labeled study summaries. Unstated severity is shown as Unrated; no bounty amount is inferred. Recently added sorts by collection addition date, not the date a vulnerability was discovered or published. A regression check locks the original methodology strings byte for byte.
 
 ## Run locally
 

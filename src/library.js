@@ -33,7 +33,7 @@ export function selectReports(reports, { query = '', topic = 'all', severity = '
     if (sort === 'severity') return (severityOrder[b.severity] || 0) - (severityOrder[a.severity] || 0);
     if (sort === 'name') return a.name.localeCompare(b.name);
     if (collection === 'read') return read.indexOf(a.id) - read.indexOf(b.id);
-    return 0;
+    return Date.parse(b.dateAdded || '1970-01-01') - Date.parse(a.dateAdded || '1970-01-01');
   });
 }
 export function readPreference(key, fallback) { try { return JSON.parse(localStorage.getItem(key)) ?? fallback; } catch { return fallback; } }

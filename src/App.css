@@ -272,3 +272,17 @@ option { background: var(--surface); color: var(--text); }
   h1 { font-size: 38px; }
   .intro-copy > p { font-size: 12px; }
 }
+.sourced-label { display: inline-block; margin-left: 9px; color: var(--accent-text); font-size: 7px; letter-spacing: .7px; padding: 3px 4px; border: 1px solid var(--border); border-radius: 3px; }
+.severity-unrated { color: var(--subtle); background: var(--bg); border-color: var(--border); }
+.briefing-section .method-attribution { font-size: 10px; color: var(--subtle); margin-bottom: 10px; }
+.briefing-sources { border: 1px solid var(--border); border-radius: 7px; padding: 20px; background: var(--surface); }
+.disclosure-status { display: flex; align-items: flex-start; gap: 8px; color: var(--accent-text); font-size: 11px; line-height: 1.7; margin-bottom: 8px; }
+.disclosure-status svg { margin-top: 2px; }
+.briefing-sources > p { font-size: 11px; }
+.briefing-sources ul { list-style: none; margin: 17px 0 0; padding: 0; }
+.briefing-sources li { border-top: 1px solid var(--border); padding: 13px 0 0; margin-top: 13px; }
+.briefing-sources a { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; color: var(--accent-text); font-size: 12px; line-height: 1.7; text-decoration: none; overflow-wrap: anywhere; }
+.briefing-sources a:hover { text-decoration: underline; }
+.briefing-sources a svg { margin-top: 3px; }
+.briefing-sources li > div { display: flex; gap: 12px; flex-wrap: wrap; color: var(--subtle); font-size: 10px; margin-top: 5px; line-height: 1.7; }
+@media (max-width: 520px) { .briefing-sources { padding: 15px; } .briefing-sources a { font-size: 12px; } .sourced-label { font-size: 7px; margin-left: 7px; } }
