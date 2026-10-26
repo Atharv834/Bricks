@@ -1,0 +1,35 @@
+name: Build and test BountyBricks
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: bricks-build-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
+      - name: Test library behavior
+        run: CI=true npm test -- --watchAll=false --runInBand
+      - name: Build site
+        run: npm run build
+# The existing GitHub Pages site publishes from gh-pages.
+# Publish compiled assets there with npm run deploy from an authenticated checkout.

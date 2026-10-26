@@ -1,97 +1,33 @@
-import React, { useEffect } from 'react';
-import PropTypes from 'prop-types';
-
-const Modal = ({ bug, closeModal, handleFilter }) => {
+import React, { useEffect, useRef, useState } from 'react';
+import Icon from './Icon';
+import { bountyLabel } from '../library';
+export default function Modal({ bug, closeModal, applyTagSearch, saved, toggleSave }) {
+  const dialog = useRef(null);
+  const [copyState, setCopyState] = useState('Copy method');
+  const timer = useRef(null);
   useEffect(() => {
-    const handleEsc = (event) => {
-      if (event.keyCode === 27) {
-        closeModal();
-      }
-    };
-    window.addEventListener('keydown', handleEsc);
-
-    return () => {
-      window.removeEventListener('keydown', handleEsc);
-    };
-  }, [closeModal]);
-
-  if (!bug) {
-    return null;
-  }
-
-  const { name, type, severity, bounty, company, description, lessonLearned, method, whenToUse, tags } = bug;
-
-  const handleTagClick = (tag, event) => {
-    event.stopPropagation();
-    handleFilter(tag);
-    closeModal();
+    const el = dialog.current;
+    const previousFocus = document.activeElement;
+    el.showModal();
+    el.querySelector('[data-close-report]')?.focus();
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => { clearTimeout(timer.current); document.body.style.overflow = previousOverflow; el.close(); previousFocus?.focus(); };
+  }, []);
+  const copyMethod = async () => {
+    try { await navigator.clipboard.writeText(bug.method); setCopyState('Copied'); } catch { setCopyState('Copy unavailable'); }
+    clearTimeout(timer.current);
+    timer.current = setTimeout(() => setCopyState('Copy method'), 2200);
   };
-
-
-  return (
-    <div className="modal-overlay active" id="modalOverlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle" onClick={closeModal}>
-      <div className="modal" onClick={(e) => e.stopPropagation()}>
-        <div className="modal-header">
-          <h2 id="modalTitle" className="modal-title">{name}</h2>
-          <button className="modal-close" id="modalClose" aria-label="Close modal" onClick={closeModal}>&times;</button>
-        </div>
-        <div className="modal-content" id="modalContent">
-          <div className="modal-badges">
-            <span className="modal-badge bug-type">{type}</span>
-            <span className={`modal-badge severity ${severity.toLowerCase().replace(' ', '')}`}>{severity}</span>
-            <span className={`modal-badge bounty${bounty === 'N/A' ? ' no-bounty' : ''}`}>{bounty}</span>
-            <span className="modal-badge company">{company}</span>
-          </div>
-
-          <div className="modal-section">
-            <h3>📝 Description</h3>
-            <p>{description}</p>
-          </div>
-
-          <div className="modal-section">
-            <h3>🧠 Lesson Learned</h3>
-            <p>{lessonLearned}</p>
-          </div>
-
-          <div className="modal-section">
-            <h3>🧠 Methodology</h3>
-            <p style={{ whiteSpace: 'pre-wrap' }}>{method}</p>
-          </div>
-
-          <div className="modal-section">
-            <h3>🎯 When to Use/Look For</h3>
-            <p>{whenToUse}</p>
-          </div>
-
-          <div className="modal-section">
-            <h3>🏷️ Tags</h3>
-            <div className="modal-tags">
-              {tags.map(tag => (
-                <span key={tag} className="tag" onClick={(e) => handleTagClick(tag, e)}>{tag}</span>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
+  return <dialog ref={dialog} className="report-dialog" aria-labelledby="modalTitle" onCancel={e => { e.preventDefault(); closeModal(); }} onClick={e => { if (e.target === e.currentTarget) { const r = e.currentTarget.getBoundingClientRect(); if (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom) closeModal(); } }}>
+    <div className="dialog-top"><span><Icon name="book" size={16} />REPORT BRIEFING</span><div><button className={`button secondary dialog-save ${saved ? 'is-saved' : ''}`} aria-pressed={saved} onClick={toggleSave}><Icon name="bookmark" size={15} />{saved ? 'Saved' : 'Save report'}</button><button data-close-report="true" className="icon-button" onClick={closeModal} aria-label="Close report"><Icon name="close" size={20} /></button></div></div>
+    <div className="dialog-body"><div className="dialog-title"><span className={`severity severity-${bug.severity.toLowerCase()}`}><i />{bug.severity}</span><span className="dialog-category">{bug.type}</span><h2 id="modalTitle">{bug.name}</h2><div className="dialog-metadata"><span>{bug.company}</span><span className="metadata-separator" /><strong>{bountyLabel(bug)}</strong><span>listed bounty</span></div></div>
+      <section className="briefing-section"><h3><span>01</span>The finding</h3><p>{bug.description}</p></section>
+      <section className="lesson-section"><Icon name="info" size={20} /><div><h3>The lesson to take away</h3><p>{bug.lessonLearned}</p></div></section>
+      <section className="briefing-section"><h3><span>02</span>When to look for it</h3><p>{bug.whenToUse || 'No testing context is recorded for this report.'}</p></section>
+      <section className="briefing-section"><div className="method-heading"><h3><span>03</span>The methodology</h3>{bug.method && <button className="button secondary" aria-label={copyState} onClick={copyMethod}><Icon name={copyState === 'Copied' ? 'check' : 'copy'} size={14} /><span role="status">{copyState}</span></button>}</div><pre className="method-content">{bug.method || 'No methodology has been recorded for this report.'}</pre></section>
+      <section className="briefing-section related-tags"><h3>Keep exploring</h3><p>Follow a tag to find related notes across the collection.</p><div>{bug.tags.map(tag => <button key={tag} onClick={() => applyTagSearch(tag)}>#{tag}<Icon name="arrow" size={13} /></button>)}</div></section>
+      <p className="briefing-note">From the BountyBricks collection. Original notes and listed bounties are preserved; source disclosures have not been independently verified.</p>
     </div>
-  );
-};
-
-Modal.propTypes = {
-  bug: PropTypes.shape({
-    name: PropTypes.string.isRequired,
-    type: PropTypes.string.isRequired,
-    severity: PropTypes.string.isRequired,
-    bounty: PropTypes.string.isRequired,
-    company: PropTypes.string.isRequired,
-    description: PropTypes.string.isRequired,
-    lessonLearned: PropTypes.string.isRequired,
-    method: PropTypes.string.isRequired,
-    whenToUse: PropTypes.string.isRequired,
-    tags: PropTypes.arrayOf(PropTypes.string).isRequired,
-  }).isRequired,
-  closeModal: PropTypes.func.isRequired,
-  handleFilter: PropTypes.func.isRequired,
-};
-
-export default Modal;
+  </dialog>;
+}

@@ -1,70 +1,58 @@
-# Getting Started with Create React App
+# BountyBricks
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+An independent library of vulnerability report notes for security researchers. Browse 20 findings, understand their methods, and keep a personal reading list.
 
-## Available Scripts
+**[Open the live library](https://atharv834.github.io/Bricks/)**
 
-In the project directory, you can run:
+## The research workspace
 
-### `npm start`
+- Graphite and mint interface with dark and light themes.
+- Six broad topic groups, preserving all original vulnerability labels and report content.
+- Search titles, companies, descriptions, methods, lessons and tags. Multiple search words can appear anywhere in a report.
+- Combine search with severity, topic and collection filters. Sort by collection order, bounty, severity or name.
+- Grid and compact list views, plus useful empty states and one-click filter reset.
+- Save reports and return to recently opened notes. Reading progress, bookmarks, theme and layout are stored in this browser; they are not synced to an account.
+- Report briefings with a highlighted lesson, original methodology, copy control and clickable tags.
+- Keyboard support: `/` or `Ctrl/Cmd+K` focuses search; `Esc` closes a report. Native modal focus containment, focus restoration and reduced-motion support.
+- Responsive navigation and report layouts for small screens.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+The dataset is in `src/data.js`. These are collected research notes; original disclosures and bounty claims have not been independently verified. Reports have no recorded publication dates, so the interface does not imply a chronological order.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Run locally
 
-### `npm test`
+```bash
+npm ci
+npm start
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```bash
+# Check filtering, topic grouping, reading history and numeric sorting
+CI=true npm test -- --watchAll=false --runInBand
 
-### `npm run build`
+# Production bundle, with the configured /Bricks/ public path
+npm run build
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+React 19, Create React App / react-scripts 5, CSS and inline SVG. No backend or additional runtime dependency is required for the workspace features.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Publishing
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+The source lives on `main` and the repository's default `master` branch. GitHub Pages serves the built output from `gh-pages`. Source changes are checked by the build workflow; the deployment branch contains the published static bundle.
 
-### `npm run eject`
+To publish from an authenticated local checkout:
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+```bash
+npm run deploy
+```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+This builds the project and publishes the `build` directory with the existing `gh-pages` package. Keep the GitHub Pages publishing source on its existing `gh-pages` branch setting.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## Design references
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+The redesign prioritizes visible results, predictable controls, a quiet sidebar and legible report hierarchy:
 
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- [Linear: A calmer interface for a product in motion](https://linear.app/now/behind-the-latest-design-refresh)
+- [Linear: How we redesigned the UI](https://linear.app/now/how-we-redesigned-the-linear-ui)
+- [Nielsen Norman Group: Helpful filter categories and values](https://www.nngroup.com/articles/filter-categories-values/)
+- [Nielsen Norman Group: Mobile faceted search with a tray](https://www.nngroup.com/articles/mobile-faceted-search/)
+- [Raycast: Search bar and keyboard-first navigation](https://manual.raycast.com/search-bar)
