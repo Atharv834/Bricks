@@ -257,8 +257,138 @@ export const vulnerabilities = [
     "whenToUse": "Test password reset flows combined with account email change features. Look for scenarios where tokens survive state changes that should invalidate them. This pattern is especially common in applications that store tokens indexed by user ID without checking current email alignment.",
     "method": "1. Request password reset for victim's email; capture token from email link.\n2. Change account email to attacker address (with existing session).\n3. Use previously captured reset token (still valid) to set new password.\n4. Login with victim's original email + new password (token bound to account, not current email).\n5. Highlight missing invalidation on email change event.",
     "tags": ["password-reset", "token-reuse", "email-change", "account-takeover", "session-management", "high-severity"]
-  }
- 
+  },
+{
+  "id": "BB-PUBLIC-021",
+  "name": "GitLab Password Reset to an Unverified Email Address (CVE-2023-7028)",
+  "type": "Account Takeover",
+  "severity": "Critical",
+  "bounty": "N/A",
+  "company": "GitLab",
+  "description": "A password-reset request could send a recovery link to an unverified address, enabling account takeover without victim interaction. An enabled second factor still prevented sign-in.",
+  "lessonLearned": "Bind recovery delivery to a verified account address and reject unexpected parameter types.",
+  "whenToUse": "Review recovery flows that accept alternate addresses or structured input.",
+  "method": "1. Create a test account and separate controlled mailbox on an isolated vulnerable GitLab instance.\n2. Capture its password-reset request; change the email value from one address to a list containing both addresses.\n3. Check the separate mailbox for a usable reset link.\n4. Repeat after patching; confirm the unverified recipient is rejected.\n5. Distinguish a password reset from a login: an enabled second factor still applies.",
+  "tags": [
+    "Account Takeover",
+    "Password Reset",
+    "CVE-2023-7028",
+    "Email Verification",
+    "Parameter Types"
+  ],
+  "dateAdded": "2026-10-26",
+  "disclosureStatus": "Patched in the January 2024 security release.",
+  "patchNote": "Fixed versions include 16.7.2, 16.6.4 and 16.5.6, with backports listed in the advisory.",
+  "sources": [
+    {
+      "title": "GitLab critical security release and FAQ",
+      "url": "https://docs.gitlab.com/releases/patches/patch-release-gitlab-16-7-2-released/",
+      "author": "GitLab",
+      "published": "2024-01-11"
+    }
+  ]
+},
+{
+  "id": "BB-PUBLIC-022",
+  "name": "Starbucks Gift Card Balance Duplication via Race Condition",
+  "type": "Business Logic / Race Condition",
+  "severity": "Unrated",
+  "bounty": "N/A",
+  "company": "Starbucks",
+  "description": "Concurrent confirmations from separate sessions could spend the same gift-card balance twice. Session-local cleanup did not protect the shared balance from overlapping transfers.",
+  "lessonLearned": "Enforce balance checks and debits atomically across sessions, using appropriate database locking and idempotency.",
+  "whenToUse": "Review transfers, redemptions or one-time actions involving a shared limited resource.",
+  "method": "1. Reproduce the transfer flow using test balances in a controlled environment.\n2. Open two independent sessions for the same account.\n3. Prepare a transfer from the same funded source in each session.\n4. Confirm both transfers concurrently and compare the combined balance before and after.\n5. Check whether both credits succeeded despite insufficient funds for both debits.",
+  "tags": [
+    "Race Condition",
+    "Business Logic",
+    "Gift Cards",
+    "Concurrent Requests",
+    "Atomicity"
+  ],
+  "dateAdded": "2026-10-26",
+  "disclosureStatus": "The researcher reported the issue fixed before publication.",
+  "patchNote": "No formal severity rating or bounty amount is stated in the linked write-up.",
+  "sources": [
+    {
+      "title": "Hacking Starbucks for unlimited coffee",
+      "url": "https://sakurity.com/blog/2015/05/21/starbucks.html",
+      "author": "Egor Homakov / Sakurity",
+      "published": "2015-05-21"
+    }
+  ]
+},
+{
+  "id": "BB-PUBLIC-023",
+  "name": "GitLab Image Metadata Processing RCE (CVE-2021-22205)",
+  "type": "Command Injection / File Upload",
+  "severity": "Critical",
+  "bounty": "N/A",
+  "company": "GitLab",
+  "description": "GitLab passed image uploads to ExifTool. A disguised DjVu file could reach an unsafe metadata parser and execute code. GitLab tracked the integration flaw as CVE-2021-22205; the ExifTool parser bug was CVE-2021-22204.",
+  "lessonLearned": "Validate file content, update parsing dependencies, avoid evaluating metadata and isolate file processors.",
+  "whenToUse": "Review upload features that invoke metadata parsers or other native file-processing tools.",
+  "method": "1. Use an isolated vulnerable GitLab lab with its historical ExifTool dependency.\n2. Create a snippet and open the description attachment control.\n3. Upload the original report's harmless marker-file proof of concept, whose image extension hides DjVu content.\n4. Inspect the lab server for the marker file to confirm execution during metadata removal.\n5. Repeat on a patched build and verify that the marker is not created.",
+  "tags": [
+    "File Upload",
+    "Command Injection",
+    "ExifTool",
+    "CVE-2021-22205",
+    "CVE-2021-22204"
+  ],
+  "dateAdded": "2026-10-26",
+  "disclosureStatus": "Patched in GitLab releases on 14 April 2021.",
+  "patchNote": "GitLab fixes: 13.10.3, 13.9.6 and 13.8.8. GitLab subsequently classified this as critical, CVSS 10.0.",
+  "sources": [
+    {
+      "title": "Original report: RCE when removing metadata with ExifTool",
+      "url": "https://gitlab.com/gitlab-org/gitlab/-/work_items/327121",
+      "author": "vakzz / William Bowling"
+    },
+    {
+      "title": "ExifTool CVE-2021-22204 technical write-up",
+      "url": "https://devcraft.io/2021/05/04/exiftool-arbitrary-code-execution-cve-2021-22204.html",
+      "author": "vakzz / William Bowling",
+      "published": "2021-05-04"
+    },
+    {
+      "title": "GitLab advisory: impact and fixed versions",
+      "url": "https://about.gitlab.com/blog/action-needed-in-response-to-cve2021-22205/",
+      "author": "GitLab",
+      "published": "2021-11-04"
+    }
+  ]
+},
+{
+  "id": "BB-PUBLIC-024",
+  "name": "Red Hat Web Cache Poisoning via an Unkeyed Header",
+  "type": "Web Cache Poisoning",
+  "severity": "Unrated",
+  "bounty": "N/A",
+  "company": "Red Hat",
+  "description": "An unkeyed X-Forwarded-Host header influenced an Open Graph URL. Combining its unsafe reflection with shared caching allowed a modified response to reach requests without that header.",
+  "lessonLearned": "Keep response-changing inputs consistent with cache keys, validate proxy headers and encode output correctly.",
+  "whenToUse": "Review cached pages whose generated URLs depend on request headers.",
+  "method": "1. Use a dedicated test URL or cache-buster in an authorized lab.\n2. Send a baseline request and record the response.\n3. Add X-Forwarded-Host with a harmless marker; inspect the generated Open Graph URL.\n4. Request the same isolated cache key again without the header, using a separate session.\n5. A retained marker demonstrates cache poisoning; reflection alone is insufficient. Check the original report for the historical XSS chain.",
+  "tags": [
+    "Web Cache Poisoning",
+    "X-Forwarded-Host",
+    "Cache Keys",
+    "XSS",
+    "CDN"
+  ],
+  "dateAdded": "2026-10-26",
+  "disclosureStatus": "The research states that its disclosed cases were patched.",
+  "patchNote": "No per-case severity rating or Red Hat bounty amount is stated.",
+  "sources": [
+    {
+      "title": "Practical Web Cache Poisoning — Basic Poisoning case study",
+      "url": "https://portswigger.net/research/practical-web-cache-poisoning",
+      "author": "James Kettle / PortSwigger Research",
+      "published": "2018-08-09"
+    }
+  ]
+}
  ];
 export const severityOrder = {
     'Critical': 4,

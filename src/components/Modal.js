@@ -25,9 +25,15 @@ export default function Modal({ bug, closeModal, applyTagSearch, saved, toggleSa
       <section className="briefing-section"><h3><span>01</span>The finding</h3><p>{bug.description}</p></section>
       <section className="lesson-section"><Icon name="info" size={20} /><div><h3>The lesson to take away</h3><p>{bug.lessonLearned}</p></div></section>
       <section className="briefing-section"><h3><span>02</span>When to look for it</h3><p>{bug.whenToUse || 'No testing context is recorded for this report.'}</p></section>
-      <section className="briefing-section"><div className="method-heading"><h3><span>03</span>The methodology</h3>{bug.method && <button className="button secondary" aria-label={copyState} onClick={copyMethod}><Icon name={copyState === 'Copied' ? 'check' : 'copy'} size={14} /><span role="status">{copyState}</span></button>}</div><pre className="method-content">{bug.method || 'No methodology has been recorded for this report.'}</pre></section>
+      <section className="briefing-section"><div className="method-heading"><h3><span>03</span>The methodology</h3>{bug.method && <button className="button secondary" aria-label={copyState} onClick={copyMethod}><Icon name={copyState === 'Copied' ? 'check' : 'copy'} size={14} /><span role="status">{copyState}</span></button>}</div>{bug.sources?.length ? <p className="method-attribution">Study summary; original disclosure linked below.</p> : null}<pre className="method-content">{bug.method || 'No methodology has been recorded for this report.'}</pre></section>
+      {bug.sources?.length ? <section className="briefing-section briefing-sources" aria-labelledby="source-heading">
+        <h3 id="source-heading">Original disclosures &amp; sources</h3>
+        <div className="disclosure-status"><Icon name="check" size={15} /><span>{bug.disclosureStatus}</span></div>
+        <p>{bug.patchNote}</p>
+        <ul>{bug.sources.map(source => <li key={source.url}><a href={source.url} target="_blank" rel="noreferrer"><span>{source.title}</span><Icon name="external" size={14} /></a><div><span>{source.author}</span>{source.published ? <time dateTime={source.published}>{source.published}</time> : null}</div></li>)}</ul>
+      </section> : null}
       <section className="briefing-section related-tags"><h3>Keep exploring</h3><p>Follow a tag to find related notes across the collection.</p><div>{bug.tags.map(tag => <button key={tag} onClick={() => applyTagSearch(tag)}>#{tag}<Icon name="arrow" size={13} /></button>)}</div></section>
-      <p className="briefing-note">From the BountyBricks collection. Original notes and listed bounties are preserved; source disclosures have not been independently verified.</p>
+      <p className="briefing-note">{bug.sources?.length ? 'A study summary of the credited public disclosures. Severity is marked Unrated when the source gives no rating; bounty amounts are shown only when stated.' : 'From the BountyBricks collection. Original notes and listed bounties are preserved; source disclosures have not been independently verified.'}</p>
     </div>
   </dialog>;
 }
