@@ -1,13 +1,11 @@
 {
   "files": {
-    "main.css": "/Bricks/static/css/main.c4159eef.css",
-    "main.js": "/Bricks/static/js/main.5a626daf.js",
-    "index.html": "/Bricks/index.html",
-    "main.c4159eef.css.map": "/Bricks/static/css/main.c4159eef.css.map",
-    "main.5a626daf.js.map": "/Bricks/static/js/main.5a626daf.js.map"
+    "main.css": "./static/css/main.e8fff381.css",
+    "main.js": "./static/js/main.49ccbfea.js",
+    "index.html": "./index.html"
   },
   "entrypoints": [
-    "static/css/main.c4159eef.css",
-    "static/js/main.5a626daf.js"
+    "static/css/main.e8fff381.css",
+    "static/js/main.49ccbfea.js"
   ]
 }
